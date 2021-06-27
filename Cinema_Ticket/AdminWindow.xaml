@@ -1,0 +1,330 @@
+﻿<Window x:Class="Cinema_Ticket.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cinema_Ticket"
+        mc:Ignorable="d"
+        Title="Окно администратора" Height="626" Width="1000" Background="#2b2728" WindowStartupLocation="CenterScreen" FontSize="16"  ResizeMode="CanMinimize" >
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.ColumnSpan="2"  x:Name="products" TabStripPlacement="Left" Margin="10,50,15,15" SelectionChanged ="products_SelectionChanged">
+            <TabItem x:Name="Booking" Margin="0,-2,-0.2,-2.4">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Width="165">
+                        <TextBlock Margin="10,15,80,15" Height="28" Width="133"><Run Text="Продажа билетов"/></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel Margin="0,0,-0.2,2.6">
+                        <Grid Height="543" Margin="0,0,-0.2,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Добавить сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="563,28,0,0" VerticalAlignment="Top"/>
+                            <Label Content="Поиск сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="46,29,0,0" VerticalAlignment="Top"/>
+                            <Rectangle Fill="#2b2728" HorizontalAlignment="Left" RadiusX="15" RadiusY="15" Height="493" Margin="20,14,0,0" VerticalAlignment="Top" Width="745" Opacity="0.5"/>
+                            <Button x:Name="addTicketButton" Content="Продать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Width="112" Height="36" />
+                            <Label Content="Дата" HorizontalAlignment="Left" Margin="106,27,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <Label Content="Время" HorizontalAlignment="Left" Margin="106,169,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White" RenderTransformOrigin="0.547,0.606"/>
+                            <Label Content="Зал" HorizontalAlignment="Left" Margin="106,233,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <Label Content="Фильм" HorizontalAlignment="Left" Margin="106,105,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <ComboBox  x:Name="ticketHallList" HorizontalAlignment="Left" Margin="106,266,0,0" VerticalAlignment="Top" Width="213"  SelectionChanged="ticketHallList_SelectionChanged" IsEnabled="False"/>
+                            <DatePicker x:Name="ticketDateChoose" HorizontalAlignment="Left" Margin="106,64,0,0" VerticalAlignment="Top" Width="213"  BorderBrush="#2b2728" Background="#2b2728" Height="31" CalendarClosed="ticketDateChoose_CalendarClosed" />
+                            <ComboBox  x:Name="ticketFilmList" HorizontalAlignment="Left" Margin="106,142,0,0" VerticalAlignment="Top" Width="213" IsEnabled="False" SelectionChanged="ticketFilmList_SelectionChanged"/>
+                            <ComboBox  x:Name="ticketTimeList" HorizontalAlignment="Left" Margin="106,205,0,0" VerticalAlignment="Top" Width="213" IsEnabled="False" SelectionChanged="ticketTimeList_SelectionChanged"/>
+                            <Label Content="Ряд" HorizontalAlignment="Left" Margin="106,303,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White" />
+                            <Label Content="Место" HorizontalAlignment="Left" Margin="225,303,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                            <Rectangle Fill="White"  HorizontalAlignment="Left" Height="329" Margin="386,94,0,0"  VerticalAlignment="Top" Width="327"/>
+                            <Rectangle Fill="#FFEDEAEA"  HorizontalAlignment="Left" Height="28" Margin="386,66,0,0"  VerticalAlignment="Top" Width="327"/>
+                            <Border BorderBrush="Black" BorderThickness="5" Margin="386,60,57.8,114"/>
+                            <Button x:Name="printButton" Content="Печать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="601,449,0,0" VerticalAlignment="Top" Width="112" Height="36"/>
+                            <Label x:Name="ticketNumberLabel" Margin="391,65,285.8,449" Content="Номер билета:" FontSize="12" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketNumberEnter" Margin="488,66,214.8,448" Content="" FontSize="12"/>
+                            <Label x:Name="ticketDateLabel" Margin="409,105,251.8,408" Content="Дата сеанса:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketDateEnter" Margin="514,105,137.8,409" Content="" FontSize="14"/>
+                            <Label x:Name="ticketTimeLabel" Margin="407,143,240.8,370" Content="Время сеанса:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketTimeEnter" Margin="523,145,128.8,368" Content="" FontSize="14" />
+                            <Label x:Name="ticketHallLabel" Margin="409,180,279.8,333" Content="Кинозал:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketHallEnter" Margin="490,181,161.8,333" Content="" FontSize="14"/>
+                            <Label x:Name="ticketRawLabel" Margin="409,220,318.8,293" Content="Ряд:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketRawEnter" Margin="453,221,283.8,293" Content="" FontSize="14"/>
+                            <Label x:Name="ticketPlaceLabel" Margin="519,219,184.8,294" Content="Место:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketPlaceEnter" Margin="577,222,159.8,292" Content="" FontSize="14"/>
+                            <Label x:Name="ticketTypeLabel" Margin="409,255,259.8,257" Content="Тип места:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketTypeEnter" Margin="497,257,137.8,257" Content="" FontSize="14"/>
+                            <Label x:Name="ticketCostLabel" Margin="596,65,132.8,449" Content="Цена:" FontSize="12" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketCostEnter" Margin="645,65,66.8,449" Content="" FontSize="12"/>
+                            <Label x:Name="ticketFilmLabel" Margin="409,289,279.8,222" Content="Фильм:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketFilmEnter" Margin="482,289,79.8,224" Content="" FontSize="14"/>
+                            <Label x:Name="ticketDurationLabel" Margin="409,321,184.8,189" Content="Продолжительность:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketDurationEnter" Margin="579,322,91.8,193" Content="" FontSize="14"/>
+                            <Label x:Name="ticketLimitLabel" Margin="409,354,240.8,155" Content="Ограничение:" FontSize="16" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketLimitEnter" Margin="522,355,141.8,159" Content="" FontSize="14"/>
+                            <Label x:Name="ticketEmployeeLabel" Margin="558,399,159.8,120" Content="Кассир:" FontSize="12" FontWeight="DemiBold"/>
+                            <Label x:Name="ticketEmployeeEnter" Margin="609,399,59.8,120" Content="" FontSize="12"/>
+                            <ComboBox  x:Name="Raw" HorizontalAlignment="Left" Margin="106,335,0,0" VerticalAlignment="Top" Width="92" SelectionChanged="Raw_SelectionChanged" MaxDropDownHeight="75" IsEnabled="False"/>
+                            <ComboBox  x:Name="Place" HorizontalAlignment="Left" Margin="227,335,0,0" VerticalAlignment="Top" Width="92"  MaxDropDownHeight="75" IsEnabled="False"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="Ticket" Margin="0,-3.2,-0.6,-0.6">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Width="169">
+                        <TextBlock Margin="10,15,80,15">Проданные билеты</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <Grid Height="550" Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="101*"/>
+                                <RowDefinition Height="450*"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Fill="#500001" HorizontalAlignment="Left" RadiusX="10" RadiusY="10" Height="88" Margin="18,10,0,0" VerticalAlignment="Top" Width="743"  Grid.Row="0">
+                                <Rectangle.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="25" Opacity="0.2"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <DataGrid x:Name="ticketTable" RowBackground="Transparent" Margin="18,2.2,1.8,38.4" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column"  EnableRowVirtualization="False" CanUserResizeColumns="False" CanUserResizeRows="False" Grid.Row="1">
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn x:Name="ticketNumber"  FontSize="14" Header="Номер" Binding="{Binding Number}" Width="110" />
+                                    <DataGridTextColumn x:Name="ticketDate"  FontSize="14" Header="Дата" Binding="{Binding seance.seanceDate}" Width="110" />
+                                    <DataGridTextColumn x:Name="ticketTime"  FontSize="14" Header="Время" Binding="{Binding seance.seanceTime}" Width="100" />
+                                    <DataGridTextColumn x:Name="ticketHall" FontSize="14" Header="Зал" Binding="{Binding place.Hall.Name}" Width="80" />
+                                    <DataGridTextColumn x:Name="ticketRaw" FontSize="14" Header="Ряд" Binding="{Binding place.Raw}" Width="80" />
+                                    <DataGridTextColumn x:Name="ticketPlace" FontSize="14" Header="Место" Binding="{Binding place.Number}" Width="80" />
+                                    <DataGridTextColumn x:Name="ticketFilm"  FontSize="14" Header="Фильм" Binding="{Binding seance.seanceFilm.Name}" Width="130" />
+                                    <DataGridTextColumn x:Name="ticketCaost" FontSize="14" Header="Цена" Binding="{Binding Cost}" Width="60" />
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#2b2728" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                                        <Setter Property="Margin" Value="-1,-1,0,0" />
+                                        <Setter Property="Height" Value="28" />
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#ffffff" Offset="0"/>
+                                        <GradientStop Color="#dbdbdb" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </DataGrid.Background>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="deleteTicket" Header="Вернуть билет" IsEnabled="True"/>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                            <TextBox x:Name="SearchTicket" Margin="34,46,507.8,22.8" FontSize="16" />
+                            <Button x:Name="SearchButton" Margin="299,43,374.8,22.8" Content="Найти" Template="{StaticResource MainButtonTemplate}" Padding="0,0,0,5" Click="SearchButton_Click"/>
+                            <Label Content="Введите номер билета" Foreground="White" HorizontalAlignment="Left" Margin="34,10,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="Employee" Margin="0,-2,-0.2,-2.4">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Width="165">
+                        <TextBlock Margin="10,15,80,15" Height="28" Width="95"><Run Text="Сотрудники"/></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel Margin="0,0,-0.2,2.6">
+                        <Grid Height="580" Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="13*"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Fill="#500001" HorizontalAlignment="Left" RadiusX="10" RadiusY="10" Height="95" Margin="12,18,0,0" VerticalAlignment="Top" Width="750"  Grid.Row="0" Grid.ColumnSpan="3">
+                                <Rectangle.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="25" Opacity="0.2"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <DataGrid x:Name="employeeTable" RowBackground="Transparent" Margin="12,118,9.8,73" AutoGenerateColumns="False" IsReadOnly="True"  HeadersVisibility="Column" Grid.ColumnSpan="3"  MouseDoubleClick="employeeTable_MouseDoubleClick"  EnableRowVirtualization="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False">
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn x:Name="employeeSurname" FontSize="14" FontWeight="DemiBold" Header="ФИО" Binding="{Binding Path=FIO}" Width="135" />
+                                    <DataGridTextColumn x:Name="employeeBirthday" FontSize="14" Header="Дата рождения" Binding="{Binding Path=Birthday}" Width="145" />
+                                    <DataGridTextColumn x:Name="employeeStartDay" FontSize="14" Header="Дата зачисления" Binding="{Binding Path=DateOfEnrollment}" Width="145" />
+                                    <DataGridTextColumn x:Name="employeePhoneNumber" FontSize="14" Header="Телефон" Binding="{Binding Path=PhoneNumber}"  Width="130" />
+                                    <DataGridTextColumn x:Name="employeePost" FontSize="14" Header="Должность"  Binding="{Binding Path=Post}" Width="125"/>
+                                    <DataGridTextColumn x:Name="employeeSalary" FontSize="14" Header="Зарплата" Binding="{Binding Path=Salary}" Width="67"/>
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#2b2728" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                                        <Setter Property="Margin" Value="-1,-1,0,0" />
+                                        <Setter Property="Height" Value="28" />
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#ffffff" Offset="0"/>
+                                        <GradientStop Color="#dbdbdb" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </DataGrid.Background>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="deleteEmployee" Header="Удалить" Click="deleteEmployee_Click" ></MenuItem>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                            <Button x:Name="addEmployeeButton" Content="Добавить" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="179.6,62,0,0" VerticalAlignment="Top" Width="112" Height="36" Click="addEmployeeButton_Click" Grid.Column="2"/>
+                            <Label Content="Добавить сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="172.6,28,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                            <TextBox x:Name="Search" Margin="46,66,105.4,482" FontSize="16" Grid.ColumnSpan="2" />
+                            <Button Margin="220.6,62,362.8,483" Content="Найти" Template="{StaticResource MainButtonTemplate}" Padding="0,0,0,5" Click="searchEmployee" Grid.Column="1" Grid.ColumnSpan="2" />
+                            <Label Content="Поиск сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="46,29,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="Seance" Margin="0,-3.2,-0.6,-0.6">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Width="169" >
+                        <TextBlock Margin="10,15,80,15">Сеансы</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <Grid Height="550" Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="200*"/>
+                                <RowDefinition Height="400*"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Fill="#500001" HorizontalAlignment="Left" RadiusX="10" RadiusY="10" Height="146" Margin="18,10,0,0" VerticalAlignment="Top" Width="743"  Grid.Row="0">
+                                <Rectangle.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="25" Opacity="0.2"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <DatePicker x:Name="seancceDateChoose" HorizontalAlignment="Left" Margin="36,31,0,0"  VerticalAlignment="Top" Width="132" Background="#2b2728" BorderBrush="#2b2728" SelectedDateFormat="Short"/>
+                            <ComboBox x:Name="allSeanceTime" HorizontalAlignment="Left" Margin="36,109,0,0" VerticalAlignment="Top" Width="132" IsEditable="True" Height="30" FontSize="18"  KeyDown="allSeanceTime_KeyDown" />
+                            <Button x:Name="addSeanceBtn" Content="Добавить"  Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="627,100,0,0" VerticalAlignment="Top" Width="112" Height="36"  Padding="0,0,0,5" RenderTransformOrigin="-1.662,0.707" Click="addSeanceBtn_Click"/>
+                            <Label Content="Сеанс" HorizontalAlignment="Left" Margin="36,70,0,0" VerticalAlignment="Top" FontWeight="SemiBold" Foreground="White" FontSize="18"/>
+                            <ComboBox x:Name="allSeanceHall" HorizontalAlignment="Left" Margin="203,108,0,0" VerticalAlignment="Top" Width="114" IsEditable="True" Height="30" FontSize="18" KeyDown="allSeanceHall_KeyDown"/>
+                            <Label Content="Зал" HorizontalAlignment="Left" Margin="203,70,0,0" VerticalAlignment="Top" FontWeight="SemiBold" Foreground="White" FontSize="18"/>
+                            <DataGrid x:Name="seanceTable" RowBackground="Transparent" Margin="18,161,19.8,38.4" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column" Grid.RowSpan="2"  EnableRowVirtualization="False" CanUserResizeColumns="False" CanUserResizeRows="False" MouseDoubleClick="seanceTable_MouseDoubleClick">
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn x:Name="seanceDate"  FontSize="14" Header="Дата" Binding="{Binding Path=seanceDate}" Width="150"/>
+                                    <DataGridTextColumn x:Name="seanceTime"  FontSize="14" Header="Время" Binding="{Binding Path=seanceTime}" Width="150" />
+                                    <DataGridTextColumn x:Name="seanceHall" FontSize="14" Header="Зал" Binding="{Binding Path=seanceHall}" Width="90" />
+                                    <DataGridTextColumn x:Name="seanceFilm"  FontSize="14" Header="Фильм" Binding="{Binding Path=seanceFilm.Name}" Width="185" />
+                                    <DataGridTextColumn x:Name="seanceCapacity" FontSize="14" Header="Всего мест" Binding="{Binding Path=seanceCapacity}" Width="140" />
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#2b2728" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                                        <Setter Property="Margin" Value="-1,-1,0,0" />
+                                        <Setter Property="Height" Value="28" />
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                        
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#ffffff" Offset="0"/>
+                                        <GradientStop Color="#dbdbdb" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </DataGrid.Background>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="deleteSeance" Header="Удалить" Click="deleteSeance_Click"></MenuItem>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                            <Label Content="Добавить сеанс" Foreground="White" HorizontalAlignment="Left" Margin="614,64,0,0" VerticalAlignment="Top"/>
+                            <Button x:Name="showSeanceList" Content="Показать"  Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="342,103,0,0" VerticalAlignment="Top" Width="112" Height="36"  Padding="0,0,0,5" RenderTransformOrigin="-1.662,0.707" Click="showSeanceList_Click"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="Film" Margin="0,-1.8,-0.2,-2">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Width="165">
+                        <TextBlock Margin="10,15,80,15">Прокат фильмов</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <Grid Height="580" Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="316.8"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Fill="#500001" HorizontalAlignment="Left" RadiusX="10" RadiusY="10" Height="58" Margin="18,10,0,0" VerticalAlignment="Top" Width="743" Opacity="1" Grid.RowSpan="2">
+                                <Rectangle.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="25" Opacity="0.2"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <DataGrid x:Name="filmTable" RowBackground="Transparent"  Grid.Row="1" Margin="18,33,19.8,70" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column" Grid.RowSpan="2"  MouseDoubleClick="filmTable_MouseDoubleClick"  EnableRowVirtualization="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False">
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn x:Name="filmName" FontWeight="DemiBold" Header="Название" Binding="{Binding Path=Name}" Width="190" />
+                                    <DataGridTextColumn x:Name="filmGenre" FontSize="14" Header="Жанр" Binding="{Binding Path=Genre}" Width="135" />
+                                    <DataGridTextColumn x:Name="filmDuration" FontSize="14" Header="Время" Binding="{Binding Path=Duration}" Width="70" />
+                                    <DataGridTextColumn x:Name="filmYear" FontSize="14" Header="Год" Binding="{Binding Path=Year}" Width="60" />
+                                    <DataGridTextColumn x:Name="filmAgeLimit" FontSize="14" Header="Лимит" Binding="{Binding Path=AgeLimit}" Width="62" />
+                                    <DataGridTextColumn x:Name="filmStart" FontSize="14" Header="С" Binding="{Binding Path=StartreleaseDate}" Width="100" />
+                                    <DataGridTextColumn x:Name="filmEnd" FontSize="14" Header="По" Binding="{Binding Path=EndreleaseDate}" Width="96" />
+                                </DataGrid.Columns>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#2b2728" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                                        <Setter Property="Margin" Value="-1,-1,0,0" />
+                                        <Setter Property="Height" Value="28" />
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#ffffff" Offset="0"/>
+                                        <GradientStop Color="#dbdbdb" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </DataGrid.Background>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="deleteFilm" Header="Удалить" Click="deleteFilm_Click"></MenuItem>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                            <DatePicker x:Name="filmStartDate" BorderBrush="#2b2728" Background="#2b2728" HorizontalAlignment="Left" Focusable="False" Margin="124,24,0,0" VerticalAlignment="Top" Width="125"  SelectedDateFormat="Short" Grid.RowSpan="2" SelectedDateChanged="filmStartDate_SelectedDateChanged"/>
+                            <DatePicker x:Name="filmEndDate" BorderBrush="#2b2728" Background="#2b2728" HorizontalAlignment="Left" Focusable="False" Margin="305,24,0,0" VerticalAlignment="Top" Width="125"  SelectedDateFormat="Short" Grid.RowSpan="2" SelectedDateChanged="filmEndDate_SelectedDateChanged"/>
+                            <Label Content="С" HorizontalAlignment="Left" Margin="101,24,0,0" VerticalAlignment="Top" Width="22" FontWeight="SemiBold" Foreground="White" Height="30" Grid.RowSpan="2"/>
+                            <Label Content="По" HorizontalAlignment="Left" Margin="265,24,0,0" VerticalAlignment="Top" Width="30" FontWeight="SemiBold" Foreground="White" Height="30" Grid.RowSpan="2"/>
+                            <Label Content="Прокат:" HorizontalAlignment="Left" Margin="28,22,0,0" VerticalAlignment="Top" Width="72" FontWeight="SemiBold" Foreground="White" Height="30" Grid.RowSpan="2"/>
+                            <Button Content="Добавить" HorizontalAlignment="Left"  Template="{StaticResource MainButtonTemplate}" Margin="630,21,0,0" VerticalAlignment="Top" Width="112" Height="36" Click="Button_Click" Grid.RowSpan="2"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Column="1" Content="Выход" HorizontalAlignment="Left"  Template="{StaticResource MainButtonTemplate}" Margin="637,10,0,0" VerticalAlignment="Top" Width="87" Height="27" Padding="0,0,0,5" Click="Exit"/>
+        <Label Content="Администратор: " Foreground="White" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
+        <Label Content="ФИО" x:Name="fio" Foreground="White" HorizontalAlignment="Left" Margin="135,6,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>
