@@ -130,7 +130,7 @@ namespace Cinema_Ticket
 
 
 
-            #region Функции || ???
+            #region Функции || Закончить 2 неготовые функции
 
         public void GetSeance() // Получение списка сеансов || Полностью готово
         {
@@ -536,9 +536,9 @@ namespace Cinema_Ticket
 
 
 
-            #region Кнопки || ???
+            #region Кнопки || Протестировать
 
-        private void addTicketButton_Click(object sender, RoutedEventArgs e) // || ???
+        private void addTicketButton_Click(object sender, RoutedEventArgs e) // Продажа билета и отправка билета на печать/почту || Протестировать
         {
     SellTicket();
     GetTicketInfo();
@@ -553,12 +553,12 @@ namespace Cinema_Ticket
     Place.Text = "";
 }
 
-        private void printButton_Click(object sender, RoutedEventArgs e) // || ???
+        private void printButton_Click(object sender, RoutedEventArgs e) // Печать/отправка на почту билета || Протестировать
         {
     try
     {
         Bitmap printscreen = new Bitmap(414, 463);
-        Graphics graphics = Graphics.FromImage(printscreen as Image);
+        Graphics graphics = Graphics.FromImage(printscreen as System.Drawing.Image);
         graphics.CopyFromScreen(1070, 302, 0, 0, printscreen.Size);
         printscreen.Save("D:\\Alesya\\3course\\2sem\\БД\\Курсовая работа\\Screen\\screen.png", System.Drawing.Imaging.ImageFormat.Png);
         using (MailMessage mess = new MailMessage())
@@ -612,23 +612,37 @@ namespace Cinema_Ticket
 
 
 
-            #region Триггеры || ???
+            #region Триггеры || Полностью готово
 
-        private void ticketDateChoose_CalendarClosed(object sender, RoutedEventArgs e) // || ???
+        private void ticketDateChoose_CalendarClosed(object sender, RoutedEventArgs e) // Разблокировка и заполнение чекбокса с фильмами  || Полностью готово
         {
             ticketFilmList.IsEnabled = true;
             GetFilmWithDate();
             ticketFilmList.ItemsSource = FilmNameList;
         }
 
-        private void ticketHallList_SelectionChanged(object sender, SelectionChangedEventArgs e) // || ???
+        private void ticketFilmList_SelectionChanged(object sender, RoutedEventArgs e) // Разблокировка и заполнение чекбокса с временем  || Полностью готово
+        {
+            ticketTimeList.IsEnabled = true;
+            GetTimeWithDateFilm();
+            ticketTimeList.ItemsSource = SeanceTimeList;
+        }
+                                                                                                                                                                   
+        private void ticketTimeList_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с залами  || Полностью готово
+        {
+            ticketHallList.IsEnabled = true;
+            GetHallWithSeance();
+            ticketHallList.ItemsSource = HallNameList;
+        }
+
+        private void ticketHallList_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с рядами  || Полностью готово
         {
             Raw.IsEnabled = true;
             CheckRaw();
             Raw.ItemsSource = RawsList;
         }
 
-        private void Raw_SelectionChanged(object sender, SelectionChangedEventArgs e) // || ???
+        private void Raw_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с местами  || Полностью готово
         {
             if (Raw.SelectedItem != null)
             {
@@ -638,22 +652,8 @@ namespace Cinema_Ticket
             }
         }
 
-        private void ticketFilmList_SelectionChanged(object sender, RoutedEventArgs e) // || ???
-        {
-            ticketTimeList.IsEnabled = true;
-            GetTimeWithDateFilm();
-            ticketTimeList.ItemsSource = SeanceTimeList;
-        }
-
-        private void ticketTimeList_SelectionChanged(object sender, SelectionChangedEventArgs e) // || ???
-        {
-            ticketHallList.IsEnabled = true;
-            GetHallWithSeance();
-            ticketHallList.ItemsSource = HallNameList;
-        }
-
         #endregion
-
+            // Проработать логику непоследовательного выбора
 
 
         #endregion
@@ -666,9 +666,9 @@ namespace Cinema_Ticket
 
 
 
-            #region Функции || ???
+            #region Функции || Не готово
 
-        public void GetTicketInfo() // Получение списка билетов || ???
+        public void GetTicketInfo() // Получение списка билетов || Поменять sql запрос
         {
             allTicketList.Clear();
 
@@ -717,7 +717,7 @@ namespace Cinema_Ticket
             }
         }
 
-        public void DeleteCurrentTicket() // || ???
+        public void DeleteCurrentTicket() // Возврат проданного билета || Не готово
         {
     int index = allTicketList.IndexOf((Ticket)ticketTable.SelectedItem);
     Ticket cur_ticket = allTicketList[index];
@@ -795,9 +795,9 @@ namespace Cinema_Ticket
 
 
 
-            #region Кнопки || ???
+            #region Кнопки || Протестировать
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) // || ???
+        private void SearchButton_Click(object sender, RoutedEventArgs e) // Поиск по билетам || Протестировать
         {
             try
             {
@@ -843,7 +843,7 @@ namespace Cinema_Ticket
             }
         }
 
-        private void deleteTicket_Click(object sender, RoutedEventArgs e) // || ???
+        private void deleteTicket_Click(object sender, RoutedEventArgs e) // Кнопка удаления билета || Протестировать
         {
     DeleteCurrentTicket();
     GetTicketInfo();
