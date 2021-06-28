@@ -284,7 +284,7 @@ namespace Cinema_Ticket
                         foreach (DataRow crow in crdt.Rows)
                         {
                             int crid = Convert.ToInt32(crow["ID"]);
-                            string CheckPlace = $@"SELECT count(*) from PlaceStatus where IDSeance = (select id from Seance  where Dataseance = (cast('{Date_in}' as datetime2)) and Timeseance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDPlace = '{crid}' and Status = '0'";
+                            string CheckPlace = $@"SELECT count(*) from PlaceStatus where IDSeance = (select id from Seance  where Dataseance = (cast('{Date_in}' as datetime2)) and Timeseance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDPlace = '{crid}') and Status = '0'";
                             cmd = new SqlCommand(CheckPlace, connection);
                             FreePlace = cmd.ExecuteScalar();
                             int a = Convert.ToInt32(FreePlace);
@@ -308,7 +308,6 @@ namespace Cinema_Ticket
         }
 
         public void GetPlace() // Получение списка мест || Полностью готово
-
         {
             PlaceList.Clear();
             try
@@ -363,7 +362,7 @@ namespace Cinema_Ticket
                     var Employee_in = Convert.ToInt32(userID);
                     string query = $@"SELECT COUNT(*) from PlaceStatus where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and Status = '0'";
                     SqlCommand cmd = new SqlCommand(query, connection);
-                    object result = cmd.ExecuteScalar();
+                    var result = cmd.ExecuteScalar();
                     int a = Convert.ToInt32(result);
                     if (a == 0)
                     {
@@ -374,10 +373,14 @@ namespace Cinema_Ticket
                         query = $@"select MAX(Ticketnumber) from Ticket";
                         cmd = new SqlCommand(query, connection);
                         result = cmd.ExecuteScalar();
-                        a = Convert.ToInt32(result);
-                        if(a == 0)
+                        if (result == DBNull.Value)
                         {
                             a = 1;
+                        }
+                        else
+                        {
+                            a = Convert.ToInt32(result);
+                            a++;
                         }
                         query = $@"insert into Ticket(IDSeance,IDPlaceStatus, IDEmployee, Ticketnumber) values ((select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),(select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),'{Employee_in}', '{a}')";
                         cmd = new SqlCommand(query, connection);
@@ -387,15 +390,15 @@ namespace Cinema_Ticket
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Билет продан успешно!");
                     }
-             }
-         
-     }
-     catch (SqlException ex)
-     {
-         MessageBox.Show(ex.Message);
-     }
+                }
 
- }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
 
         public void PrintTicketInfo() // Заполнение билета для печати || Не готово
         {
@@ -512,22 +515,22 @@ namespace Cinema_Ticket
 
 
 
-            #region Кнопки || Протестировать
+        #region Кнопки || Протестировать
 
         private void addTicketButton_Click(object sender, RoutedEventArgs e) // Продажа билета и отправка билета на печать/почту || Протестировать
         {
-    SellTicket();
-    GetTicketInfo();
-    ticketTable.ItemsSource = allTicketList;
-    PrintTicketInfo();
+            SellTicket();
+            GetTicketInfo();
+            ticketTable.ItemsSource = allTicketList;
+            PrintTicketInfo();
 
-    ticketDateChoose.Text = "";
-    ticketTimeList.Text = "";
-    ticketHallList.Text = "";
-    ticketFilmList.Text = "";
-    Raw.Text = "";
-    Place.Text = "";
-}
+            ticketDateChoose.Text = "";
+            ticketTimeList.Text = "";
+            ticketHallList.Text = "";
+            ticketFilmList.Text = "";
+            Raw.Text = "";
+            Place.Text = "";
+        }
 
         private void printButton_Click(object sender, RoutedEventArgs e) // Печать/отправка на почту билета || Протестировать
         {
@@ -592,35 +595,67 @@ namespace Cinema_Ticket
 
         private void ticketDateChoose_CalendarClosed(object sender, RoutedEventArgs e) // Разблокировка и заполнение чекбокса с фильмами  || Полностью готово
         {
-            ticketFilmList.IsEnabled = true;
-            GetFilmWithDate();
-            ticketFilmList.ItemsSource = FilmNameList;
+            if (ticketDateChoose.SelectedDate != null)
+            {
+                ticketFilmList.IsEnabled = true;
+                GetFilmWithDate();
+                ticketFilmList.ItemsSource = FilmNameList;
+                ticketTimeList.IsEnabled = false;
+                SeanceTimeList.Clear();
+                ticketHallList.IsEnabled = false;
+                HallNameList.Clear();
+                Raw.IsEnabled = false;
+                RawsList.Clear();
+                Place.IsEnabled = false;
+                PlaceList.Clear();
+            }
         }
 
         private void ticketFilmList_SelectionChanged(object sender, RoutedEventArgs e) // Разблокировка и заполнение чекбокса с временем  || Полностью готово
         {
-            ticketTimeList.IsEnabled = true;
-            GetTimeWithDateFilm();
-            ticketTimeList.ItemsSource = SeanceTimeList;
+            if (ticketFilmList.SelectedValue != null && ticketDateChoose.SelectedDate != null) 
+            {
+                ticketTimeList.IsEnabled = true;
+                GetTimeWithDateFilm();
+                ticketTimeList.ItemsSource = SeanceTimeList;
+                ticketHallList.IsEnabled = false;
+                HallNameList.Clear();
+                Raw.IsEnabled = false;
+                RawsList.Clear();
+                Place.IsEnabled = false;
+                PlaceList.Clear();
+            }
         }
                                                                                                                                                                    
         private void ticketTimeList_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с залами  || Полностью готово
         {
-            ticketHallList.IsEnabled = true;
-            GetHallWithSeance();
-            ticketHallList.ItemsSource = HallNameList;
+            if (ticketTimeList.SelectedValue != null && ticketFilmList.SelectedValue != null && ticketDateChoose.SelectedDate != null)
+            {
+                ticketHallList.IsEnabled = true;
+                GetHallWithSeance();
+                ticketHallList.ItemsSource = HallNameList;
+                Raw.IsEnabled = false;
+                RawsList.Clear();
+                Place.IsEnabled = false;
+                PlaceList.Clear();
+            }
         }
 
         private void ticketHallList_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с рядами  || Полностью готово
         {
-            Raw.IsEnabled = true;
-            CheckRaw();
-            Raw.ItemsSource = RawsList;
+            if (ticketHallList.SelectedValue != null && ticketTimeList.SelectedValue != null && ticketFilmList.SelectedValue != null && ticketDateChoose.SelectedDate != null)
+            {
+                Raw.IsEnabled = true;
+                CheckRaw();
+                Raw.ItemsSource = RawsList;
+                Place.IsEnabled = false;
+                PlaceList.Clear();
+            }
         }
 
         private void Raw_SelectionChanged(object sender, SelectionChangedEventArgs e) // Разблокировка и заполнение чекбокса с местами  || Полностью готово
         {
-            if (Raw.SelectedItem != null)
+            if (Raw.SelectedValue != null && ticketHallList.SelectedValue != null && ticketTimeList.SelectedValue != null && ticketFilmList.SelectedValue != null && ticketDateChoose.SelectedDate != null)
             {
                 Place.IsEnabled = true;
                 GetPlace();
@@ -644,7 +679,7 @@ namespace Cinema_Ticket
 
             #region Функции || Не готово
 
-        public void GetTicketInfo() // Получение списка билетов || Поменять sql запрос
+        public void GetTicketInfo() // Получение списка билетов || Протестировать
         {
             allTicketList.Clear();
 
@@ -654,7 +689,7 @@ namespace Cinema_Ticket
                 using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM TicketInfo";
+                    string query = "Select Ticket.ID, Ticket.TicketNumber, Seance.dataSeance DateSeance,  Seance.timeSeance,Film.name as FilmName, Film.duration FilmDuration, Film.ageLimit FilmLimit, Genre.name Genre,Hall.name Hall, Place.rowNumber RowNumber,Place.place, Typeplace.name typePlace, Typeplace.cost Cost from Ticket inner join Seance  on Ticket.IDSeance = Seance.ID inner join Film on Seance.IDFilm = Film.ID inner join Genre on Film.IDGenre = Genre.ID inner join Place on Ticket.IDPlaceStatus = Place.ID inner join TypePlace on Place.IDTypePlace = Typeplace.ID inner join Hall on Place.IDHall = Hall.ID inner join Employee on Ticket.IDEmployee = Employee.ID inner join Post on Employee.IDPost = Post.ID";
                     SqlCommand cmd = new SqlCommand(query, connection);
                     DataTable dt = new DataTable();
                     dt.Load(cmd.ExecuteReader());
@@ -667,7 +702,7 @@ namespace Cinema_Ticket
                         string dateSeance = Convert.ToDateTime(row["DateSeance"]).ToString("D");
                         string timeSeance = row["TimeSeance"].ToString();
                         string hallPlace = row["Hall"].ToString();
-                        int rowPlace = Convert.ToInt32(row["RawNumber"]);
+                        int rowPlace = Convert.ToInt32(row["RowNumber"]);
                         int placeNumber = Convert.ToInt32(row["Place"]);
                         string typePlace = (row["typePlace"]).ToString();
                         string filmName = (row["FilmName"]).ToString();

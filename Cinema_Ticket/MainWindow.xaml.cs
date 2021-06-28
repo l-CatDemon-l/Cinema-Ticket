@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using Cinema_Ticket.Connection;
 using System.Windows.Media;
-
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Cinema_Ticket
 {
@@ -97,11 +97,9 @@ namespace Cinema_Ticket
                         pbPass.Password = "";
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    MessageBox.Show("Пользователя не существует!");
-                    tbLog.Text = "";
-                    pbPass.Password = "";
+                    MessageBox.Show(ex.Message);
                 }
 
             }

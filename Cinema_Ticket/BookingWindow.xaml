@@ -23,7 +23,7 @@
                             <Label Content="Добавить сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="563,28,0,0" VerticalAlignment="Top"/>
                             <Label Content="Поиск сотрудника" Foreground="White" HorizontalAlignment="Left" Margin="46,29,0,0" VerticalAlignment="Top"/>
                             <Rectangle Fill="#2b2728" HorizontalAlignment="Left" RadiusX="15" RadiusY="15" Height="493" Margin="20,14,0,0" VerticalAlignment="Top" Width="745" Opacity="0.5"/>
-                            <Button x:Name="addTicketButton" Content="Продать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Width="112" Height="36" />
+                            <Button x:Name="addTicketButton" Content="Продать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Width="112" Height="36" Click="addTicketButton_Click"/>
                             <Label Content="Дата" HorizontalAlignment="Left" Margin="106,27,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
                             <Label Content="Время" HorizontalAlignment="Left" Margin="106,169,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White" RenderTransformOrigin="0.547,0.606"/>
                             <Label Content="Зал" HorizontalAlignment="Left" Margin="106,233,0,0" VerticalAlignment="Top" Height="32" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
@@ -37,7 +37,7 @@
                             <Rectangle Fill="White"  HorizontalAlignment="Left" Height="329" Margin="386,94,0,0"  VerticalAlignment="Top" Width="327"/>
                             <Rectangle Fill="#FFEDEAEA"  HorizontalAlignment="Left" Height="28" Margin="386,66,0,0"  VerticalAlignment="Top" Width="327"/>
                             <Border BorderBrush="Black" BorderThickness="5" Margin="386,60,57.8,114"/>
-                            <Button x:Name="printButton" Content="Печать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="601,449,0,0" VerticalAlignment="Top" Width="112" Height="36"/>
+                            <Button x:Name="printButton" Content="Печать" Padding="0,0,0,5" Template="{StaticResource MainButtonTemplate}" HorizontalAlignment="Left" Margin="601,449,0,0" VerticalAlignment="Top" Width="112" Height="36" Click="printButton_Click"/>
                             <Label x:Name="ticketNumberLabel" Margin="391,65,285.8,449" Content="Номер билета:" FontSize="12" FontWeight="DemiBold"/>
                             <Label x:Name="ticketNumberEnter" Margin="488,66,214.8,448" Content="" FontSize="12"/>
                             <Label x:Name="ticketDateLabel" Margin="409,105,251.8,408" Content="Дата сеанса:" FontSize="16" FontWeight="DemiBold"/>

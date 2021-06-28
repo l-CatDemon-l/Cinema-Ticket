@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <TabControl Grid.ColumnSpan="2"  x:Name="products" TabStripPlacement="Left" Margin="10,50,15,15" SelectionChanged ="products_SelectionChanged">
-            <TabItem x:Name="Booking" Margin="0,-2,-0.2,-2.4">
+            <!--<TabItem x:Name="Booking" Margin="0,-2,-0.2,-2.4">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" Width="165">
                         <TextBlock Margin="10,15,80,15" Height="28" Width="133"><Run Text="Продажа билетов"/></TextBlock>
@@ -133,7 +133,7 @@
                         </Grid>
                     </StackPanel>
                 </TabItem.Content>
-            </TabItem>
+            </TabItem>-->
             <TabItem x:Name="Employee" Margin="0,-2,-0.2,-2.4">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" Width="165">
