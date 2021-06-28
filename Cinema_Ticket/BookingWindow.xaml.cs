@@ -347,74 +347,50 @@ namespace Cinema_Ticket
             }
         }
 
-        public void SellTicket() // Продажа билетов || Не готово
+        public void SellTicket() // Продажа билетов || Протестировать
         {
-
-     try
-     {
-         using (OracleConnection connection = new OracleConnection(OracleDatabaseConnection.connection_meneger))
-         {
-             connection.Open();
-             OracleParameter date_in = new OracleParameter
-             {
-                 ParameterName = "Date_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Date,
-                 Value = ticketDateChoose.SelectedDate
-             };
-             OracleParameter time_in = new OracleParameter
-             {
-                 ParameterName = "Time_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Varchar2,
-                 Value = ticketTimeList.SelectedItem.ToString()
-             };
-             OracleParameter hall_in = new OracleParameter
-             {
-                 ParameterName = "Hall_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Varchar2,
-                 Value = ticketHallList.SelectedItem.ToString()
-             };
-             OracleParameter film_in = new OracleParameter
-             {
-                 ParameterName = "Film_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Varchar2,
-                 Value = ticketFilmList.SelectedItem.ToString()
-             };
-             OracleParameter row_in = new OracleParameter
-             {
-                 ParameterName = "Row_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Int32,
-                 Value = Convert.ToInt32(Raw.SelectedItem)
-             };
-             OracleParameter place_in = new OracleParameter
-             {
-                 ParameterName = "Place_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Int32,
-                 Value = Convert.ToInt32(Place.SelectedItem)
-             };
-             OracleParameter emp_in = new OracleParameter
-             {
-                 ParameterName = "Employee_in",
-                 Direction = ParameterDirection.Input,
-                 OracleDbType = OracleDbType.Int32,
-                 Value = Convert.ToInt32(userID)
-             };
-             using (OracleCommand command = new OracleCommand("admin.sellTicket"))
-             {
-                 command.Connection = connection;
-                 command.CommandType = CommandType.StoredProcedure;
-                 command.Parameters.AddRange(new OracleParameter[] { date_in, time_in, hall_in, film_in, row_in, place_in, emp_in });
-                 command.ExecuteNonQuery();
-                 MessageBox.Show("Билет продан успешно!");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
+                {
+                    connection.Open();
+                    var Date_in = ticketDateChoose.SelectedDate;
+                    var Time_in = ticketTimeList.SelectedItem.ToString();
+                    var Hall_in = ticketHallList.SelectedItem.ToString();
+                    var Film_in = ticketFilmList.SelectedItem.ToString();
+                    var Row_in = Convert.ToInt32(Raw.SelectedItem);
+                    var Place_in = Convert.ToInt32(Place.SelectedItem);
+                    var Employee_in = Convert.ToInt32(userID);
+                    string query = $@"SELECT COUNT(*) from PlaceStatus where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and Status = '0'";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    object result = cmd.ExecuteScalar();
+                    int a = Convert.ToInt32(result);
+                    if (a == 0)
+                    {
+                        MessageBox.Show("Билет уже продан!");
+                    }
+                    else
+                    {
+                        query = $@"select MAX(Ticketnumber) from Ticket";
+                        cmd = new SqlCommand(query, connection);
+                        result = cmd.ExecuteScalar();
+                        a = Convert.ToInt32(result);
+                        if(a == 0)
+                        {
+                            a = 1;
+                        }
+                        query = $@"insert into Ticket(IDSeance,IDPlaceStatus, IDEmployee, Ticketnumber) values ((select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),(select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),'{Employee_in}', '{a}')";
+                        cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
+                        query = $@"update PlaceStatus set status = '1' where IDSeance = (select id from Seance where Dataseance = '{Date_in}' and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
+                        cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Билет продан успешно!");
+                    }
              }
-         }
+         
      }
-     catch (OracleException ex)
+     catch (SqlException ex)
      {
          MessageBox.Show(ex.Message);
      }

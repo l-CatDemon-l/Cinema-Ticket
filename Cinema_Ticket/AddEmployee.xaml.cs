@@ -126,7 +126,6 @@ namespace Cinema_Ticket
                         cmd = new SqlCommand(query, connection);
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Сотрудник добавлен!");
-                        (this.Owner as AdminWindow).GetEmployee();
                     }
 
                 }

@@ -93,6 +93,7 @@ namespace Cinema_Ticket
                     {
                         query = $@"insert into Seance(DataSeance,TimeSeance, IDHall, IDFilm) values ((cast('{Date_in}' as datetime2)),'{Time_in}',(select id from Hall where Name = '{Hall_in}') ,(select id from Film where Name = '{Film_in}'))";
                         cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
                         query = $@"select id from Place  where IDHall ='{Hall_in}' and Rownumber = '1' and Place = '1'";
                         cmd = new SqlCommand(query, connection);
                         object FirstPlace = cmd.ExecuteScalar();
@@ -105,6 +106,7 @@ namespace Cinema_Ticket
                         {
                             query = $@"insert into PlaceStatus(IDSeance,IDPlace,Status) values ((select id from Seance where Dataseance =(cast('{Date_in}' as datetime2)) and Timeseance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm = (select id from Film where Name = '{Film_in}')),'{b}','0')";
                             cmd = new SqlCommand(query, connection);
+                            cmd.ExecuteNonQuery();
                             i++;
                             b++;
                         }

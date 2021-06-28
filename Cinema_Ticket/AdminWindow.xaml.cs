@@ -18,6 +18,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Shapes;
 using Cinema_Ticket.Connection;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Cinema_Ticket
 {

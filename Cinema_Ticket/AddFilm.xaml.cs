@@ -86,6 +86,7 @@ namespace Cinema_Ticket
                     {
                         query = $@"insert into Film(Name,Year, Duration, StartRelease, EndRelease, Description, AgeLimit, IDGenre,IMG) values ('{Name_in}','{Year_in}','{Duration_in}',(CAST('{Start_in}' as datetime2)),(CAST('{End_in}' as datetime2)),'{Description_in}','{Limit_in}','{Genre_in}','{Img_in}')";
                         cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
                         MessageBox.Show("Фильм добавлен!");
                     }
                 }
