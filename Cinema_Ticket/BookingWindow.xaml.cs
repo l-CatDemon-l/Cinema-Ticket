@@ -578,7 +578,7 @@ namespace Cinema_Ticket
 
         }
     }
-    catch (Exception exception)
+    catch (Exception)
     {
         MessageBox.Show("Error");
     }
@@ -693,79 +693,49 @@ namespace Cinema_Ticket
             }
         }
 
-        public void DeleteCurrentTicket() // Возврат проданного билета || Не готово
+        public void DeleteCurrentTicket() // Возврат проданного билета || Протестировать
         {
-    int index = allTicketList.IndexOf((Ticket)ticketTable.SelectedItem);
-    Ticket cur_ticket = allTicketList[index];
-    try
-    {
-        using (OracleConnection connection = new OracleConnection(OracleDatabaseConnection.connection_meneger))
-        {
-            connection.Open();
-            OracleParameter number_in = new OracleParameter
+            int index = allTicketList.IndexOf((Ticket)ticketTable.SelectedItem);
+            Ticket cur_ticket = allTicketList[index];
+            try
             {
-                ParameterName = "Number_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Int32,
-                Value = cur_ticket.Number
-            };
-            OracleParameter date_in = new OracleParameter
+                using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
+                {
+                    connection.Open();
+                    var Number_in = cur_ticket.Number;
+                    var Date_in = Convert.ToDateTime(cur_ticket.seance.seanceDate);
+                    var Time_in = cur_ticket.seance.seanceTime;
+                    var Hall_in = cur_ticket.place.Hall.Name;
+                    var Film_in = cur_ticket.seance.seanceFilm.Name;
+                    var Row_in = cur_ticket.place.Raw;
+                    var Place_in = cur_ticket.place.Number;
+                    string query = $@"SELECT COUNT(*) from PlaceStatus where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and Status = '1'";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    object result = cmd.ExecuteScalar();
+                    int a = Convert.ToInt32(result);
+                    if (a != 0)
+                    {
+                        query = $@"delete from Ticket where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and IDPlaceStatus = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
+                        cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
+                        query = $@"update PlaceStatus set status = '0' where IDSeance = (select id from Seance where Dataseance = '{Date_in}' and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
+                        cmd = new SqlCommand(query, connection);
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Билет отменен!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Такого билета не существует!");
+                    }
+                    
+                }
+            }
+            catch (SqlException ex)
             {
-                ParameterName = "Date_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Date,
-                Value = Convert.ToDateTime(cur_ticket.seance.seanceDate)
-            };
-            OracleParameter time_in = new OracleParameter
-            {
-                ParameterName = "Time_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Varchar2,
-                Value = cur_ticket.seance.seanceTime
-            };
-            OracleParameter hall_in = new OracleParameter
-            {
-                ParameterName = "Hall_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Varchar2,
-                Value = cur_ticket.place.Hall.Name
-            };
-            OracleParameter film_in = new OracleParameter
-            {
-                ParameterName = "Film_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Varchar2,
-                Value = cur_ticket.seance.seanceFilm.Name
-            };
-            OracleParameter row_in = new OracleParameter
-            {
-                ParameterName = "Row_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Int32,
-                Value = cur_ticket.place.Raw
-            };
-            OracleParameter place_in = new OracleParameter
-            {
-                ParameterName = "Place_in",
-                Direction = ParameterDirection.Input,
-                OracleDbType = OracleDbType.Int32,
-                Value = cur_ticket.place.Number
-            };
-            using (OracleCommand command = new OracleCommand("admin.deleteTicket"))
-            {
-                command.Connection = connection;
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddRange(new OracleParameter[] { number_in, date_in, time_in, hall_in, film_in, row_in, place_in });
-                command.ExecuteNonQuery();
-                MessageBox.Show("Билет отменен!");
+                MessageBox.Show(ex.Message);
             }
         }
-    }
-    catch (OracleException ex)
-    {
-        MessageBox.Show(ex.Message);
-    }
-}
+
 
         #endregion
 
