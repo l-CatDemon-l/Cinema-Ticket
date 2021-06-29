@@ -94,7 +94,7 @@ namespace Cinema_Ticket
                         query = $@"insert into Seance(DataSeance,TimeSeance, IDHall, IDFilm) values ((cast('{Date_in}' as datetime2)),'{Time_in}',(select id from Hall where Name = '{Hall_in}') ,(select id from Film where Name = '{Film_in}'))";
                         cmd = new SqlCommand(query, connection);
                         cmd.ExecuteNonQuery();
-                        query = $@"select id from Place  where IDHall ='{Hall_in}' and Rownumber = '1' and Place = '1'";
+                        query = $@"select id from Place  where IDHall =(select id from Hall where Name = '{Hall_in}') and Rownumber = '1' and Place = '1'";
                         cmd = new SqlCommand(query, connection);
                         object FirstPlace = cmd.ExecuteScalar();
                         int b = Convert.ToInt32(FirstPlace);

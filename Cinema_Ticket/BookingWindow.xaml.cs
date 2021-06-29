@@ -126,11 +126,11 @@ namespace Cinema_Ticket
 
 
 
-        #region Продажа || ???
+        #region Продажа || Полностью готово
 
 
 
-            #region Функции || Закончить 2 неготовые функции
+            #region Функции || Полностью готово
 
         public void GetSeance() // Получение списка сеансов || Полностью готово
         {
@@ -346,7 +346,7 @@ namespace Cinema_Ticket
             }
         }
 
-        public void SellTicket() // Продажа билетов || Протестировать
+        public void SellTicket() // Продажа билетов || Полностью готово
         {
             try
             {
@@ -382,7 +382,7 @@ namespace Cinema_Ticket
                             a = Convert.ToInt32(result);
                             a++;
                         }
-                        query = $@"insert into Ticket(IDSeance,IDPlaceStatus, IDEmployee, Ticketnumber) values ((select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),(select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),'{Employee_in}', '{a}')";
+                        query = $@"insert into Ticket(IDSeance, IDPlaceStatus, IDEmployee, Ticketnumber) values((select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')),(select id from PlaceStatus where IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))) ,'{Employee_in}', '{a}')";
                         cmd = new SqlCommand(query, connection);
                         cmd.ExecuteNonQuery();
                         query = $@"update PlaceStatus set status = '1' where IDSeance = (select id from Seance where Dataseance = '{Date_in}' and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
@@ -400,7 +400,7 @@ namespace Cinema_Ticket
 
         }
 
-        public void PrintTicketInfo() // Заполнение билета для печати || Не готово
+        public void PrintTicketInfo() // Заполнение билета для печати || Полностью готово
         {
             Ticket curr_ticket = allTicketList[allTicketList.Count - 1];
             ticketNumberEnter.Content = curr_ticket.Number.ToString();
@@ -412,12 +412,12 @@ namespace Cinema_Ticket
             ticketPlaceEnter.Content = curr_ticket.place.Number.ToString();
             ticketTypeEnter.Content = curr_ticket.place.Type.ToString();
             ticketFilmEnter.Content = curr_ticket.seance.seanceFilm.Name.ToString();
-            ticketDurationEnter.Content = curr_ticket.seance.seanceFilm.Duration.Substring(0, curr_ticket.seance.seanceFilm.Duration.IndexOf('.')) + " ч " + curr_ticket.seance.seanceFilm.Duration.Substring(curr_ticket.seance.seanceFilm.Duration.IndexOf('.') + 1, 2) + " мин"; ;
+            ticketDurationEnter.Content = curr_ticket.seance.seanceFilm.Duration;
             ticketLimitEnter.Content = curr_ticket.seance.seanceFilm.AgeLimit + " лет";
             ticketEmployeeEnter.Content = fio.Content;
         }
 
-        #endregion
+            #endregion
 
 
 
@@ -515,79 +515,84 @@ namespace Cinema_Ticket
 
 
 
-        #region Кнопки || Протестировать
+            #region Кнопки || Полностью готово
 
-        private void addTicketButton_Click(object sender, RoutedEventArgs e) // Продажа билета и отправка билета на печать/почту || Протестировать
+        private void addTicketButton_Click(object sender, RoutedEventArgs e) // Продажа билета и занесения в поля для печати/отправки на почту || Полностью готово
         {
             SellTicket();
             GetTicketInfo();
             ticketTable.ItemsSource = allTicketList;
             PrintTicketInfo();
 
-            ticketDateChoose.Text = "";
-            ticketTimeList.Text = "";
-            ticketHallList.Text = "";
-            ticketFilmList.Text = "";
-            Raw.Text = "";
-            Place.Text = "";
+            ticketDateChoose.SelectedDate = null;
+            ticketFilmList.IsEnabled = false;
+            FilmNameList.Clear();
+            ticketTimeList.IsEnabled = false;
+            SeanceTimeList.Clear();
+            ticketHallList.IsEnabled = false;
+            HallNameList.Clear();
+            Raw.IsEnabled = false;
+            RawsList.Clear();
+            Place.IsEnabled = false;
+            PlaceList.Clear();
         }
 
-        private void printButton_Click(object sender, RoutedEventArgs e) // Печать/отправка на почту билета || Протестировать
+        private void printButton_Click(object sender, RoutedEventArgs e) // Печать/отправка на почту билета || Полностью готово
         {
-    try
-    {
-        Bitmap printscreen = new Bitmap(414, 463);
-        Graphics graphics = Graphics.FromImage(printscreen as System.Drawing.Image);
-        graphics.CopyFromScreen(1070, 302, 0, 0, printscreen.Size);
-        printscreen.Save("D:\\Alesya\\3course\\2sem\\БД\\Курсовая работа\\Screen\\screen.png", System.Drawing.Imaging.ImageFormat.Png);
-        using (MailMessage mess = new MailMessage())
-        {
-            SmtpClient client = new SmtpClient("smtp.mail.ru", Convert.ToInt32(587))
-            {
-                Credentials = new NetworkCredential("alesya.demidkevich@mail.ru", "nevergiveup-98765"),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network
-            };
-            mess.From = new MailAddress("alesya.demidkevich@mail.ru");
-            mess.To.Add(new MailAddress("alesia.demidkevich@gmail.com"));
-            mess.Subject = "Cinema";
-            mess.IsBodyHtml = true;
-            mess.SubjectEncoding = Encoding.UTF8;
-            mess.Body = $"<html><head></head><body><p>Билет на сеанс</br></p></body>";
-
             try
             {
-                mess.Attachments.Add(new Attachment("D:\\Alesya\\3course\\2sem\\БД\\Курсовая работа\\Screen\\screen.png"));
+                Bitmap printscreen = new Bitmap(322, 367);
+                Graphics graphics = Graphics.FromImage(printscreen as System.Drawing.Image);
+                graphics.CopyFromScreen(1050, 352, 0, 0, printscreen.Size);
+                printscreen.Save("Ticket.png", System.Drawing.Imaging.ImageFormat.Png);
+                using (MailMessage mess = new MailMessage())
+                {
+                    SmtpClient client = new SmtpClient("smtp.mail.ru", Convert.ToInt32(587))
+                    {
+                        Credentials = new NetworkCredential("artem-nefedov13-1999@mail.ru", "rg1FGqutT9BEZjZsastb"),
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network
+                    };
+                    mess.From = new MailAddress("artem-nefedov13-1999@mail.ru");
+                    mess.To.Add(new MailAddress("artemnefedov11@gmail.com"));
+                    mess.Subject = "Билет на сеанс";
+                    mess.IsBodyHtml = true;
+                    mess.SubjectEncoding = Encoding.UTF8;
+                    mess.Body = $"<html><head></head><body><p>Билет на сеанс</br></p></body>";
+
+                    try
+                    {
+                        mess.Attachments.Add(new Attachment("Ticket.png"));
+                    }
+                    catch { }
+
+                    client.Send(mess);
+                    mess.Dispose();
+                    client.Dispose();
+                    MessageBox.Show("Отправлено");
+
+                    ticketNumberEnter.Content = "";
+                    ticketCostEnter.Content = "";
+                    ticketDateEnter.Content = "";
+                    ticketTimeEnter.Content = "";
+                    ticketHallEnter.Content = "";
+                    ticketRawEnter.Content = "";
+                    ticketPlaceEnter.Content = "";
+                    ticketTypeEnter.Content = "";
+                    ticketFilmEnter.Content = "";
+                    ticketDurationEnter.Content = "";
+                    ticketLimitEnter.Content = "";
+                    ticketEmployeeEnter.Content = "";
+
+                }
             }
-            catch { }
-
-            client.Send(mess);
-            mess.Dispose();
-            client.Dispose();
-            MessageBox.Show("Отправлено");
-
-            ticketNumberEnter.Content = "";
-            ticketCostEnter.Content = "";
-            ticketDateEnter.Content = "";
-            ticketTimeEnter.Content = "";
-            ticketHallEnter.Content = "";
-            ticketRawEnter.Content = "";
-            ticketPlaceEnter.Content = "";
-            ticketTypeEnter.Content = "";
-            ticketFilmEnter.Content = "";
-            ticketDurationEnter.Content = "";
-            ticketLimitEnter.Content = "";
-            ticketEmployeeEnter.Content = "";
-
+            catch (Exception)
+            {
+                MessageBox.Show("Error");
+            }
         }
-    }
-    catch (Exception)
-    {
-        MessageBox.Show("Error");
-    }
-}
 
-        #endregion
+            #endregion
 
 
 
@@ -663,23 +668,23 @@ namespace Cinema_Ticket
             }
         }
 
+            #endregion
+
+
+
         #endregion
-            // Проработать логику непоследовательного выбора
-
-
-        #endregion
 
 
 
 
 
-        #region Билеты || ???
+        #region Билеты || Полностью готово
 
 
 
-            #region Функции || Не готово
+            #region Функции || Полностью готово
 
-        public void GetTicketInfo() // Получение списка билетов || Протестировать
+        public void GetTicketInfo() // Получение списка билетов || Полностью готово
         {
             allTicketList.Clear();
 
@@ -689,7 +694,7 @@ namespace Cinema_Ticket
                 using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
                 {
                     connection.Open();
-                    string query = "Select Ticket.ID, Ticket.TicketNumber, Seance.dataSeance DateSeance,  Seance.timeSeance,Film.name as FilmName, Film.duration FilmDuration, Film.ageLimit FilmLimit, Genre.name Genre,Hall.name Hall, Place.rowNumber RowNumber,Place.place, Typeplace.name typePlace, Typeplace.cost Cost from Ticket inner join Seance  on Ticket.IDSeance = Seance.ID inner join Film on Seance.IDFilm = Film.ID inner join Genre on Film.IDGenre = Genre.ID inner join Place on Ticket.IDPlaceStatus = Place.ID inner join TypePlace on Place.IDTypePlace = Typeplace.ID inner join Hall on Place.IDHall = Hall.ID inner join Employee on Ticket.IDEmployee = Employee.ID inner join Post on Employee.IDPost = Post.ID";
+                    string query = "Select Ticket.ID, Ticket.TicketNumber, Seance.dataSeance DateSeance,  Seance.timeSeance,Film.name as FilmName, Film.duration FilmDuration, Film.ageLimit FilmLimit, Genre.name Genre,Hall.name Hall, Place.rowNumber RowNumber,Place.place, Typeplace.name typePlace, Typeplace.cost Cost from Ticket inner join Seance on Ticket.IDSeance = Seance.ID inner join Film on Seance.IDFilm = Film.ID inner join Genre on Film.IDGenre = Genre.ID inner join PlaceStatus on Ticket.IDPlaceStatus = PlaceStatus.ID inner join Place on PlaceStatus.IDPlace = Place.ID inner join TypePlace on Place.IDTypePlace = Typeplace.ID inner join Hall on Place.IDHall = Hall.ID inner join Employee on Ticket.IDEmployee = Employee.ID inner join Post on Employee.IDPost = Post.ID";
                     SqlCommand cmd = new SqlCommand(query, connection);
                     DataTable dt = new DataTable();
                     dt.Load(cmd.ExecuteReader());
@@ -728,57 +733,58 @@ namespace Cinema_Ticket
             }
         }
 
-        public void DeleteCurrentTicket() // Возврат проданного билета || Протестировать
+        public void DeleteCurrentTicket() // Возврат проданного билета || Полностью готово
         {
-            int index = allTicketList.IndexOf((Ticket)ticketTable.SelectedItem);
-            Ticket cur_ticket = allTicketList[index];
-            try
+            if (ticketTable.SelectedIndex != -1)
             {
-                using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
+                int index = allTicketList.IndexOf((Ticket)ticketTable.SelectedItem);
+                Ticket cur_ticket = allTicketList[index];
+                try
                 {
-                    connection.Open();
-                    var Number_in = cur_ticket.Number;
-                    var Date_in = Convert.ToDateTime(cur_ticket.seance.seanceDate);
-                    var Time_in = cur_ticket.seance.seanceTime;
-                    var Hall_in = cur_ticket.place.Hall.Name;
-                    var Film_in = cur_ticket.seance.seanceFilm.Name;
-                    var Row_in = cur_ticket.place.Raw;
-                    var Place_in = cur_ticket.place.Number;
-                    string query = $@"SELECT COUNT(*) from PlaceStatus where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and Status = '1'";
-                    SqlCommand cmd = new SqlCommand(query, connection);
-                    object result = cmd.ExecuteScalar();
-                    int a = Convert.ToInt32(result);
-                    if (a != 0)
+                    using (SqlConnection connection = new SqlConnection(SqlDBConnection.connection))
                     {
-                        query = $@"delete from Ticket where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and IDPlaceStatus = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
-                        cmd = new SqlCommand(query, connection);
-                        cmd.ExecuteNonQuery();
-                        query = $@"update PlaceStatus set status = '0' where IDSeance = (select id from Seance where Dataseance = '{Date_in}' and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
-                        cmd = new SqlCommand(query, connection);
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("Билет отменен!");
+                        connection.Open();
+                        var Number_in = cur_ticket.Number;
+                        var Date_in = Convert.ToDateTime(cur_ticket.seance.seanceDate);
+                        var Time_in = cur_ticket.seance.seanceTime;
+                        var Hall_in = cur_ticket.place.Hall.Name;
+                        var Film_in = cur_ticket.seance.seanceFilm.Name;
+                        var Row_in = cur_ticket.place.Raw;
+                        var Place_in = cur_ticket.place.Number;
+                        string query = $@"SELECT COUNT(*) from PlaceStatus where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
+                        SqlCommand cmd = new SqlCommand(query, connection);
+                        object result = cmd.ExecuteScalar();
+                        int a = Convert.ToInt32(result);
+                        if (a != 0)
+                        {
+                            query = $@"delete from Ticket where IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}')) and IDPlaceStatus = (select id from PlaceStatus where IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDSeance = (select id from Seance where Dataseance = '{Date_in}'  and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))))";
+                            cmd = new SqlCommand(query, connection);
+                            cmd.ExecuteNonQuery();
+                            query = $@"update PlaceStatus set status = '0' where IDSeance = (select id from Seance where Dataseance = '{Date_in}' and TimeSeance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm =(select id from Film where Name = '{Film_in}')) and IDPlace = (select id from Place where Rownumber = '{Row_in}' and Place = '{Place_in}' and IDHall = (select id from Hall where Name = '{Hall_in}'))";
+                            cmd = new SqlCommand(query, connection);
+                            cmd.ExecuteNonQuery();
+                            MessageBox.Show("Билет отменен!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Такого билета не существует!");
+                        }
+
                     }
-                    else
-                    {
-                        MessageBox.Show("Такого билета не существует!");
-                    }
-                    
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
-
-
-        #endregion
+            #endregion
 
 
 
-            #region Кнопки || Протестировать
+            #region Кнопки || Полностью готово
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) // Поиск по билетам || Протестировать
+        private void SearchButton_Click(object sender, RoutedEventArgs e) // Поиск по билетам || Полностью готово
         {
             try
             {
@@ -824,21 +830,14 @@ namespace Cinema_Ticket
             }
         }
 
-        private void deleteTicket_Click(object sender, RoutedEventArgs e) // Кнопка удаления билета || Протестировать
+        private void deleteTicket_Click(object sender, RoutedEventArgs e) // Кнопка удаления билета || Полностью готово
         {
-    DeleteCurrentTicket();
-    GetTicketInfo();
-    ticketTable.ItemsSource = allTicketList;
-}
+            DeleteCurrentTicket();
+            GetTicketInfo();
+            ticketTable.ItemsSource = allTicketList;
+        }
 
-        #endregion
-
-
-
-            #region Триггеры || ???
-
-
-        #endregion
+            #endregion
 
 
 

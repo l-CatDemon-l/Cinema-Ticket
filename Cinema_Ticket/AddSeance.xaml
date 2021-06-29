@@ -17,7 +17,7 @@
         <ComboBox  x:Name="seanceHall" HorizontalAlignment="Left" Margin="171,171,0,0" VerticalAlignment="Top" Width="205"/>
         <DatePicker x:Name="seanceDate" HorizontalAlignment="Left" Margin="171,92,0,0" VerticalAlignment="Top" Width="205"/>
         <ComboBox  x:Name="seanceFilm" HorizontalAlignment="Left" Margin="171,207,0,0" VerticalAlignment="Top" Width="205"/>
-        <ComboBox  x:Name="seanceTime" HorizontalAlignment="Left" Margin="171,133,0,0" VerticalAlignment="Top" Width="205"/>
+        <ComboBox  x:Name="seanceTime" HorizontalAlignment="Left" Margin="171,133,0,0" VerticalAlignment="Top" Width="205" IsEditable="True"/>
 
     </Grid>
 </Window>

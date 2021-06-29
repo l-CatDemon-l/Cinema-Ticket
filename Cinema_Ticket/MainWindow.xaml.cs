@@ -63,7 +63,7 @@ namespace Cinema_Ticket
                         string phone = row["phoneNumber"].ToString();
                         string login = (row["Login"]).ToString();
                         string password = (row["Password"]).ToString();
-                        curr_employee = new Employee(ID, fio, name, secondname, surname, birthday, startDay, phone, post, login, password);
+                        curr_employee = new Employee(ID, name, secondname, surname, fio, birthday, startDay, phone, post, login, password);
                     }
 
                 }

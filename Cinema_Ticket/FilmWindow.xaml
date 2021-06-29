@@ -14,7 +14,7 @@
         <Rectangle Fill="#2b2728" HorizontalAlignment="Left" RadiusX="15" RadiusY="15" Margin="19,0,0,25.8" Width="702" Opacity="0.5" Height="445" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <TextBlock x:Name="description" FontSize="16" HorizontalAlignment="Left" Height="165" Margin="61,303,0,0"  VerticalAlignment="Top" Width="626" TextWrapping="Wrap" FontWeight="SemiBold" Foreground="White" Grid.ColumnSpan="2"/>
         <Image x:Name="img" Grid.Column="1" HorizontalAlignment="Left" Height="250" Margin="48,36,0,0" VerticalAlignment="Top" Width="270"/>
-        <Label Content="Название: " FontSize="17" HorizontalAlignment="Left" Margin="62,57,0,0" VerticalAlignment="Top" Width="92" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Height="32">
+        <Label Content="Название: " FontSize="18" HorizontalAlignment="Left" Margin="62,57,0,0" VerticalAlignment="Top" Width="98" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Height="33">
             <Label.Effect>
                 <DropShadowEffect
                     ShadowDepth="2"
@@ -23,7 +23,7 @@
                     Opacity="0.5"/>
             </Label.Effect>
         </Label>
-        <Label Content="Год выпуска:" FontSize="17" Height="30" HorizontalAlignment="Left" Margin="62,94,0,0" VerticalAlignment="Top" Width="115" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
+        <Label Content="Год выпуска:" FontSize="18" Height="31" HorizontalAlignment="Left" Margin="62,94,0,0" VerticalAlignment="Top" Width="125" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
             <Label.Effect>
                 <DropShadowEffect
                     ShadowDepth="2"
@@ -32,7 +32,7 @@
                     Opacity="0.5"/>
             </Label.Effect>
         </Label>
-        <Label Content="Жанр: " Height="30" FontSize="17" HorizontalAlignment="Left" Margin="62,132,0,0" VerticalAlignment="Top" Width="92" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
+        <Label Content="Жанр: " Height="35" FontSize="18" HorizontalAlignment="Left" Margin="62,129,0,0" VerticalAlignment="Top" Width="92" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
             <Label.Effect>
                 <DropShadowEffect
                     ShadowDepth="2"
@@ -41,7 +41,7 @@
                     Opacity="0.5"/>
             </Label.Effect>
         </Label>
-        <Label Content="Продолжительность: " Height="38" FontSize="17" HorizontalAlignment="Left" Margin="62,169,0,0" VerticalAlignment="Top" Width="180" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
+        <Label Content="Продолжительность: " Height="36" FontSize="18" HorizontalAlignment="Left" Margin="62,169,0,0" VerticalAlignment="Top" Width="193" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
             <Label.Effect>
                 <DropShadowEffect
                     ShadowDepth="2"
@@ -50,7 +50,7 @@
                     Opacity="0.5"/>
             </Label.Effect>
         </Label>
-        <Label Content="Возрастное ограничение: " Height="38" FontSize="17" HorizontalAlignment="Left" Margin="62,210,0,0" VerticalAlignment="Top" Width="215" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
+        <Label Content="Возрастное ограничение: " Height="35" FontSize="18" HorizontalAlignment="Left" Margin="62,210,0,0" VerticalAlignment="Top" Width="233" FontWeight="SemiBold" Foreground="White" Grid.Column="0">
             <Label.Effect>
                 <DropShadowEffect
                     ShadowDepth="2"
@@ -59,11 +59,11 @@
                     Opacity="0.5"/>
             </Label.Effect>
         </Label>
-        <TextBlock x:Name="name" FontSize="18" HorizontalAlignment="Left" Margin="167,62,0,0"   VerticalAlignment="Top" Height="30" Width="219" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2" />
-        <TextBlock x:Name="duration" FontSize="18" HorizontalAlignment="Left" Margin="244,173,0,0"   VerticalAlignment="Top" Height="36" Width="142" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="year"  FontSize="18" HorizontalAlignment="Left" Margin="187,99,0,0"  VerticalAlignment="Top" Height="30" Width="193" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="genre" FontSize="18" Margin="137,132,27,308.8" FontWeight="SemiBold" Foreground="White" Grid.Column="0"/>
-        <TextBlock x:Name="ageLimit" FontSize="18" HorizontalAlignment="Left" Margin="280,214,0,0"   VerticalAlignment="Top" Height="35" Width="100" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="name" FontSize="18" HorizontalAlignment="Left" Margin="160,62,0,0"   VerticalAlignment="Top" Height="33" Width="224" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2" />
+        <TextBlock x:Name="duration" FontSize="18" HorizontalAlignment="Left" Margin="260,174,0,0"   VerticalAlignment="Top" Height="36" Width="140" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="year"  FontSize="18" HorizontalAlignment="Left" Margin="185,99,0,0"  VerticalAlignment="Top" Height="31" Width="193" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="genre" FontSize="18" Margin="135,135,29,319" FontWeight="SemiBold" Foreground="White" Grid.Column="0"/>
+        <TextBlock x:Name="ageLimit" FontSize="18" HorizontalAlignment="Left" Margin="295,215,0,0"   VerticalAlignment="Top" Height="35" Width="100" FontWeight="SemiBold" Foreground="White" Grid.Column="0" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
