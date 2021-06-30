@@ -698,7 +698,7 @@ namespace Cinema_Ticket
         {
             try
             {
-                if (Search.Text == "")
+                if (SearchTicket.Text == "")
                 {
                     allTicketList.Clear();
                     GetTicketInfo();
@@ -709,9 +709,9 @@ namespace Cinema_Ticket
                 {
                     sortTicketList.Clear();
 
-                    if (Search.Text != "" && !Search.Text.ToLower().Contains("w") && !Search.Text.ToLower().Contains("^") && !Search.Text.ToLower().Contains("s") && !Search.Text.ToLower().Contains("d") && !Search.Text.Contains("["))
+                    if (SearchTicket.Text != "" && !SearchTicket.Text.ToLower().Contains("w") && !SearchTicket.Text.ToLower().Contains("^") && !SearchTicket.Text.ToLower().Contains("s") && !SearchTicket.Text.ToLower().Contains("d") && !SearchTicket.Text.Contains("["))
                     {
-                        string s = Search.Text;
+                        string s = SearchTicket.Text;
                         Regex regex = new Regex(@"^" + s + @"(\w)*", RegexOptions.IgnoreCase);
                         MatchCollection matches;
                         foreach (var p in allTicketList)
@@ -736,7 +736,7 @@ namespace Cinema_Ticket
             catch (Exception)
             {
                 MessageBox.Show("Ничего не найдено!");
-                Search.Text = "";
+                SearchTicket.Text = "";
             }
         }
 
@@ -857,7 +857,7 @@ namespace Cinema_Ticket
                     var Date_in = cur_seance.seanceDate2;
                     var Film_in = cur_seance.seanceFilm.Name;
                     var Time_in = cur_seance.seanceTime;
-                    string query = $@"SELECT COUNT(*) from Seance where DataSeance = (cast('{Date_in}' as datetime2)) and Timeseance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm = '{Film_in}'";
+                    string query = $@"SELECT COUNT(*) from Seance where DataSeance = (cast('{Date_in}' as datetime2)) and Timeseance = '{Time_in}' and IDHall = (select id from Hall where Name = '{Hall_in}') and IDFilm = (select id from Film where name = '{Film_in}')";
                     SqlCommand cmd = new SqlCommand(query, connection);
                     object result = cmd.ExecuteScalar();
                     int a = Convert.ToInt32(result);
